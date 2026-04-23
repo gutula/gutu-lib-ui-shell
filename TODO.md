@@ -6,7 +6,7 @@
 
 - Publishes 6 public modules from `@platform/ui-shell`: `./registry`, `./shells`, `./navigation`, `./providers`, `./telemetry`, `./types`.
 - Exports 43 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineUiSurface`, `defineZone`, `createUiRegistry`, and more.
-- Uses a React-aware surface model: React UI + typed helpers.
+- Uses a React-aware surface model: Mixed runtime helpers.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 
 ## Current Gaps

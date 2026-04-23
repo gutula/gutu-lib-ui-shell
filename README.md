@@ -6,7 +6,7 @@
 
 Shared shell registry, navigation, provider, and telemetry contracts.
 
-![Maturity: Hardened](https://img.shields.io/badge/Maturity-Hardened-2563eb) ![Verification: Build+Typecheck+Lint+Test](https://img.shields.io/badge/Verification-Build%2BTypecheck%2BLint%2BTest-6b7280) ![UI: React UI + typed helpers](https://img.shields.io/badge/UI-React%20UI%20%2B%20typed%20helpers-0f766e) ![Consumption: Imports + providers + callbacks](https://img.shields.io/badge/Consumption-Imports%20%2B%20providers%20%2B%20callbacks-0f766e)
+![Maturity: Hardened](https://img.shields.io/badge/Maturity-Hardened-2563eb) ![Verification: Build+Typecheck+Lint+Test](https://img.shields.io/badge/Verification-Build%2BTypecheck%2BLint%2BTest-6b7280) ![UI: Mixed runtime helpers](https://img.shields.io/badge/UI-Mixed%20runtime%20helpers-2563eb) ![Consumption: Imports + typed UI primitives](https://img.shields.io/badge/Consumption-Imports%20%2B%20typed%20UI%20primitives-2563eb)
 
 ## Part Of The Gutu Stack
 
@@ -16,7 +16,7 @@ Shared shell registry, navigation, provider, and telemetry contracts.
 | Domain group | UI Foundation |
 | Primary focus | shell registry, providers, navigation and telemetry |
 | Best when | You need reusable contracts or UI/runtime helpers with their own release cadence and docs. |
-| Consumed through | Imports + providers + callbacks |
+| Consumed through | Imports + typed UI primitives |
 
 - Gutu libraries stay intentionally separate from apps and plugins so teams can version shared contracts, UI primitives, and runtime helpers without burying them in product code.
 - This library should be consumed through explicit imports, providers, callbacks, and typed helpers rather than undocumented global extension points.
@@ -25,7 +25,7 @@ Shared shell registry, navigation, provider, and telemetry contracts.
 
 - Publishes 6 public modules from `@platform/ui-shell`: `./registry`, `./shells`, `./navigation`, `./providers`, `./telemetry`, `./types`.
 - Exports 43 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineUiSurface`, `defineZone`, `createUiRegistry`, and more.
-- Uses a React-aware surface model: React UI + typed helpers.
+- Uses a React-aware surface model: Mixed runtime helpers.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 
 ## Maturity
@@ -45,8 +45,9 @@ Why this tier:
 | --- | --- |
 | Package ID | `ui-shell` |
 | Import Name | `@platform/ui-shell` |
-| UI Surface | React UI + typed helpers |
-| Consumption Model | Imports + providers + callbacks |
+| Canonical Namespace Target | `@gutu/ui-shell` |
+| UI Surface | Mixed runtime helpers |
+| Consumption Model | Imports + typed UI primitives |
 | Verification | Build+Typecheck+Lint+Test |
 
 ## Dependency And Compatibility Summary
@@ -54,10 +55,18 @@ Why this tier:
 | Field | Value |
 | --- | --- |
 | Package Name | `@platform/ui-shell` |
+| Canonical Namespace Target | `@gutu/ui-shell` |
+| Legacy Compatibility IDs | `@platform/ui-shell` |
 | Direct Dependencies | `react` |
 | Peer Dependencies | None |
 | React Runtime | Yes |
 | Workspace Requirement | Standalone dependency graph is self-contained |
+
+## Namespace Policy
+
+- `@gutu/*` is the canonical public framework namespace for new work.
+- This repo currently publishes `@platform/ui-shell` as the legacy compatibility package id while the migration to `@gutu/ui-shell` is completed.
+- Catalog metadata carries the canonical target id so dashboards, docs, and future tooling can present one uniform Gutu namespace without breaking current consumers.
 
 ## Capability Matrix
 
@@ -65,7 +74,7 @@ Why this tier:
 | --- | --- | --- |
 | Public Modules | 6 | `./registry`, `./shells`, `./navigation`, `./providers`, `./telemetry`, `./types` |
 | Named Exports | 43 | `packageId`, `packageDisplayName`, `packageDescription`, `defineUiSurface`, `defineZone`, `createUiRegistry`, `registerUiSurface`, `registerZone` |
-| UI Surface | React UI + typed helpers | React-aware surface detected |
+| UI Surface | Mixed runtime helpers | React-aware surface detected |
 | Tests | 2 | Build+Typecheck+Lint+Test |
 
 ## Quick Start For Integrators

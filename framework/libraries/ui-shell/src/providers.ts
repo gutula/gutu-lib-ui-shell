@@ -1,4 +1,5 @@
-import React from "react";
+import { createRequire } from "node:module";
+import type React from "react";
 
 import { createNavigationContract } from "./navigation";
 import { createShellAuditHook, createShellTelemetryHook } from "./telemetry";
@@ -12,6 +13,24 @@ import type {
   ShellProviderContract,
   UiRegistry
 } from "./types";
+
+const require = createRequire(import.meta.url);
+type ReactModule = typeof import("react");
+
+let shellProviderContext: React.Context<ShellProviderContract | null> | undefined;
+
+function getReactRuntime(): ReactModule {
+  return require("react") as ReactModule;
+}
+
+function getShellProviderContext(): React.Context<ShellProviderContract | null> {
+  if (!shellProviderContext) {
+    const ReactRuntime = getReactRuntime();
+    shellProviderContext = ReactRuntime.createContext<ShellProviderContract | null>(null);
+  }
+
+  return shellProviderContext;
+}
 
 export function createPermissionIntrospector(grantedPermissions: string[]): PermissionIntrospector {
   const granted = [...new Set(grantedPermissions)].sort((left, right) => left.localeCompare(right));
@@ -73,17 +92,18 @@ export function createShellProviders(input: {
   };
 }
 
-const ShellProviderContext = React.createContext<ShellProviderContract | null>(null);
-
 export function ShellProvider(props: {
   value: ShellProviderContract;
   children?: React.ReactNode;
 }) {
-  return React.createElement(ShellProviderContext.Provider, { value: props.value }, props.children);
+  const ReactRuntime = getReactRuntime();
+  const ShellProviderContext = getShellProviderContext();
+  return ReactRuntime.createElement(ShellProviderContext.Provider, { value: props.value }, props.children);
 }
 
 export function useShellProviders(): ShellProviderContract {
-  const value = React.useContext(ShellProviderContext);
+  const ReactRuntime = getReactRuntime();
+  const value = ReactRuntime.useContext(getShellProviderContext());
   if (!value) {
     throw new Error("ShellProvider is missing from the React tree");
   }

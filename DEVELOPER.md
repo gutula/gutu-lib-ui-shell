@@ -35,9 +35,10 @@ Provides the shared shell registry, providers, telemetry, and navigation contrac
 | Package ID | `ui-shell` |
 | Display Name | UI Shell |
 | Import Name | `@platform/ui-shell` |
+| Canonical Namespace Target | `@gutu/ui-shell` |
 | Version | `0.1.0` |
-| UI Surface | React UI + typed helpers |
-| Consumption Model | Imports + providers + callbacks |
+| UI Surface | Mixed runtime helpers |
+| Consumption Model | Imports + typed UI primitives |
 
 ## Dependency Graph And Compatibility
 
@@ -48,6 +49,7 @@ Provides the shared shell registry, providers, telemetry, and navigation contrac
 | Dev Dependencies | None |
 | React Runtime | Yes |
 | Workspace Scoped | No |
+| Legacy Compatibility IDs | `@platform/ui-shell` |
 
 ### Dependency interpretation
 
@@ -60,7 +62,7 @@ Provides the shared shell registry, providers, telemetry, and navigation contrac
 | Module | File | Named Exports |
 | --- | --- | --- |
 | `./registry` | `src/registry.ts` | `defineUiSurface`, `defineZone`, `createUiRegistry`, `registerUiSurface`, `registerZone`, `validateUiRegistry`, `listShellRoutes` |
-| `./shells` | `src/shells.tsx` | `AdminShell`, `PortalShell`, `SiteShell` |
+| `./shells` | `src/shells.ts` | `AdminShell`, `PortalShell`, `SiteShell` |
 | `./navigation` | `src/navigation.ts` | `listDeepLinks`, `resolveNavigationTarget`, `createNavigationContract` |
 | `./providers` | `src/providers.ts` | `createPermissionIntrospector`, `createShellEventBus`, `createShellProviders`, `ShellProvider`, `useShellProviders`, `usePermission` |
 | `./telemetry` | `src/telemetry.ts` | `createShellAuditHook`, `createShellTelemetryHook` |
@@ -74,14 +76,14 @@ Provides the shared shell registry, providers, telemetry, and navigation contrac
 | `navigation.ts` | `listDeepLinks`, `resolveNavigationTarget`, `createNavigationContract` |
 | `providers.ts` | `createPermissionIntrospector`, `createShellEventBus`, `createShellProviders`, `ShellProvider`, `useShellProviders`, `usePermission` |
 | `registry.ts` | `defineUiSurface`, `defineZone`, `createUiRegistry`, `registerUiSurface`, `registerZone`, `validateUiRegistry`, `listShellRoutes` |
-| `shells.tsx` | `AdminShell`, `PortalShell`, `SiteShell` |
+| `shells.ts` | `AdminShell`, `PortalShell`, `SiteShell` |
 | `telemetry.ts` | `createShellAuditHook`, `createShellTelemetryHook` |
 | `types.ts` | `ShellKind`, `EmbeddedPageRegistration`, `WidgetRegistration`, `ZoneDefinition`, `UiSurfaceDefinition`, `UiRegistry`, `SessionSnapshot`, `PermissionIntrospector` |
 
 ## React, UI, And Extensibility Notes
 
-- UI surface: **React UI + typed helpers**
-- Consumption model: **Imports + providers + callbacks**
+- UI surface: **Mixed runtime helpers**
+- Consumption model: **Imports + typed UI primitives**
 - Extensibility points: explicit imports, props, callbacks, registries, providers, and typed helper APIs.
 - This repo must **not** be documented as exposing a generic WordPress-style hook bus unless such a hook surface is explicitly exported through the public entrypoint.
 
@@ -100,7 +102,7 @@ Provides the shared shell registry, providers, telemetry, and navigation contrac
 graph TD
   host["Host app or plugin"] --> import["Import from @platform/ui-shell"]
   import --> api["Public modules and named exports"]
-  api --> compose["Compose react ui + typed helpers"]
+  api --> compose["Compose mixed runtime helpers"]
   compose --> verify["Verify with build, test, and docs checks"]
 ```
 
@@ -155,7 +157,7 @@ console.log(typeof defineUiSurface);
 
 - Publishes 6 public modules from `@platform/ui-shell`: `./registry`, `./shells`, `./navigation`, `./providers`, `./telemetry`, `./types`.
 - Exports 43 named symbols through the public entrypoint, including `packageId`, `packageDisplayName`, `packageDescription`, `defineUiSurface`, `defineZone`, `createUiRegistry`, and more.
-- Uses a React-aware surface model: React UI + typed helpers.
+- Uses a React-aware surface model: Mixed runtime helpers.
 - Verification lanes present: Build+Typecheck+Lint+Test.
 
 ### Current gaps
